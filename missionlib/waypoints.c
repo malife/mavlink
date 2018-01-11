@@ -28,9 +28,9 @@ extern mavlink_wpm_storage wpm;
 extern void mavlink_missionlib_send_message(mavlink_message_t* msg);
 extern void mavlink_missionlib_send_gcs_string(const char* string);
 extern uint64_t mavlink_missionlib_get_system_timestamp();
-extern void mavlink_missionlib_current_waypoint_changed(uint16_t index, float param1,
-		float param2, float param3, float param4, float param5_lat_x,
-		float param6_lon_y, float param7_alt_z, uint8_t frame, uint16_t command);
+// extern void mavlink_missionlib_current_waypoint_changed(uint16_t index, float param1,
+// 		float param2, float param3, float param4, float param5_lat_x,
+// 		float param6_lon_y, float param7_alt_z, uint8_t frame, uint16_t command);
 
 
 #define MAVLINK_WPM_NO_PRINTF
@@ -134,9 +134,9 @@ void mavlink_wpm_send_setpoint(uint16_t seq)
     if(seq < wpm.size)
     {
         mavlink_mission_item_t *cur = &(wpm.waypoints[seq]);
-        mavlink_missionlib_current_waypoint_changed(cur->seq, cur->param1,
-        		cur->param2, cur->param3, cur->param4, cur->x,
-        		cur->y, cur->z, cur->frame, cur->command);
+        // mavlink_missionlib_current_waypoint_changed(cur->seq, cur->param1,
+        // 		cur->param2, cur->param3, cur->param4, cur->x,
+        // 		cur->y, cur->z, cur->frame, cur->command);
 
         wpm.timestamp_last_send_setpoint = mavlink_missionlib_get_system_timestamp();
     }
@@ -318,8 +318,8 @@ void mavlink_wpm_message_handler(const mavlink_message_t* msg)
 {
 	uint64_t now = mavlink_missionlib_get_system_timestamp();
     switch(msg->msgid)
-    {
-		case MAVLINK_MSG_ID_ATTITUDE:
+    {		
+        case MAVLINK_MSG_ID_ATTITUDE:
         {
             if(msg->sysid == mavlink_system.sysid && wpm.current_active_wp_id < wpm.size)
             {
@@ -831,6 +831,8 @@ void mavlink_wpm_message_handler(const mavlink_message_t* msg)
 					
                     if(wpm.current_wp_id == wpm.current_count && wpm.current_state == MAVLINK_WPM_STATE_GETLIST_GETWPS)
                     {
+                        uint32_t i;
+                        
 						mavlink_missionlib_send_gcs_string("GOT ALL WPS");
                         // if (verbose) // printf("Got all %u waypoints, changing state to MAVLINK_WPM_STATE_IDLE\n", wpm.current_count);
 						
@@ -843,14 +845,13 @@ void mavlink_wpm_message_handler(const mavlink_message_t* msg)
 						
                         // switch the waypoints list
 						// FIXME CHECK!!!
-						for (int i = 0; i < wpm.current_count; ++i)
+						for (i = 0; i < wpm.current_count; ++i)
 						{
 							wpm.waypoints[i] = wpm.rcv_waypoints[i];
 						}
 						wpm.size = wpm.current_count;
 						
                         //get the new current waypoint
-                        uint32_t i;
                         for(i = 0; i < wpm.size; i++)
                         {
                             if (wpm.waypoints[i].current == 1)
