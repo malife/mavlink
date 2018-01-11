@@ -25,6 +25,16 @@
 #define MAVLINK_NO_DATA
 #endif
 
+#if (!defined(_WIN64)) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
+    // Exlcusinve unixes directives
+#elif defined(_WIN64)
+
+ #define inline __inline
+
+#else
+    #error "Platform Not Supported"
+#endif
+
 #include <mavlink_types.h>
 extern void mavlink_send_uart_bytes(mavlink_channel_t chan, uint8_t* buffer, uint16_t len);
 
@@ -60,7 +70,7 @@ enum MAVLINK_WPM_CODES
 
 /* WAYPOINT MANAGER - MISSION LIB */
 
-#define MAVLINK_WPM_MAX_WP_COUNT 15
+#define MAVLINK_WPM_MAX_WP_COUNT 9
 #define MAVLINK_WPM_CONFIG_IN_FLIGHT_UPDATE				  ///< Enable double buffer and in-flight updates
 #ifndef MAVLINK_WPM_TEXT_FEEDBACK
 #define MAVLINK_WPM_TEXT_FEEDBACK 0						  ///< Report back status information as text
