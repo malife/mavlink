@@ -16,9 +16,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
  ****************************************************************************/
-
-#include "mavlink_missionlib_data.h"
 #include "mavlink_parameters.h"
+#include "mavlink_missionlib_data.h"
 #include "math.h" /* isinf / isnan checks */
 
 extern mavlink_system_t mavlink_system;
@@ -26,6 +25,8 @@ extern mavlink_pm_storage pm;
 
 extern void mavlink_missionlib_send_message(mavlink_message_t* msg);
 extern void mavlink_missionlib_send_gcs_string(const char* string);
+
+
 
 void mavlink_pm_message_handler(const mavlink_channel_t chan, const mavlink_message_t* msg)
 {
@@ -47,11 +48,13 @@ void mavlink_pm_message_handler(const mavlink_channel_t chan, const mavlink_mess
 			if (set.target_system == mavlink_system.sysid && set.target_component == mavlink_system.compid)
 			{
 				char* key = set.param_id;
-				
-				for (uint16_t i = 0; i < MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN; i++)
+				uint16_t i;
+                
+				for (i = 0; i <MAVLINK_PM_MAX_PARAM_COUNT; i++)
 				{
 					bool match = true;
-					for (uint16_t j = 0; j < MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN; j++)
+                    uint16_t j;
+					for (j = 0; j < MAVLINK_MSG_PARAM_VALUE_FIELD_PARAM_ID_LEN; j++)
 					{
 						// Compare
 						if (pm.param_names[i][j] != key[j])
