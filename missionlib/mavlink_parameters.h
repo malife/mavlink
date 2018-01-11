@@ -25,6 +25,16 @@
 #define MAVLINK_NO_DATA
 #endif
 
+#if (!defined(_WIN64)) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
+    // Exlcusinve unixes directives
+#elif defined(_WIN64)
+
+ #define inline __inline
+
+#else
+    #error "Platform Not Supported"
+#endif
+
 #include "mavlink.h"
 #include <stdbool.h>
 
@@ -35,4 +45,5 @@
 #endif
 
 void mavlink_pm_message_handler(const mavlink_channel_t chan, const mavlink_message_t* msg);
+uint64_t mavlink_missionlib_get_system_timestamp(void);
 void mavlink_pm_queued_send(void);
