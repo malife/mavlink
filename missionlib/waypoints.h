@@ -70,7 +70,7 @@ enum MAVLINK_WPM_CODES
 
 /* WAYPOINT MANAGER - MISSION LIB */
 
-#define MAVLINK_WPM_MAX_WP_COUNT 9
+#define MAVLINK_WPM_MAX_WP_COUNT 42
 #define MAVLINK_WPM_CONFIG_IN_FLIGHT_UPDATE				  ///< Enable double buffer and in-flight updates
 #ifndef MAVLINK_WPM_TEXT_FEEDBACK
 #define MAVLINK_WPM_TEXT_FEEDBACK 0						  ///< Report back status information as text
