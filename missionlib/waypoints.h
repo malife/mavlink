@@ -25,7 +25,7 @@
 #define MAVLINK_NO_DATA
 #endif
 
-#if (!defined(_WIN64)) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
+#if (!defined(_WIN64)) && (defined(__linux__) || defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
     // Exlcusinve unixes directives
 #elif defined(_WIN64)
 
